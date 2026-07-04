@@ -1,5 +1,15 @@
 # Private hosting on Vercel
 
+> **Status: authentication is currently DISABLED.** The Basic Auth middleware was
+> removed because iOS standalone PWAs cannot re-show the login prompt once
+> credentials expire, leaving the installed app stuck on "Authentication
+> required." To re-enable it, restore the middleware from git history
+> (`git checkout e8286cb -- middleware.ts`), reinstall its dependency
+> (`npm i @vercel/functions`), add `middleware.ts` back to
+> `tsconfig.node.json`'s include list, and redeploy with the env vars below.
+> If you want protection that plays nicely with an installed PWA, prefer
+> Cloudflare Access (cookie-based, see below) over Basic Auth.
+
 The game is a fully client-side static build (one self-contained `dist/index.html`), so it needs no server, database, or Railway project — just static hosting with an access gate in front. This repo is set up for **Vercel + HTTP Basic Auth**, which works on the free Hobby plan.
 
 ## How it works

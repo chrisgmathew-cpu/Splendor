@@ -1170,13 +1170,13 @@ button.pp-token:hover { transform: translateY(-2px); }
     /* deck + 4 cards + gaps must fit the viewport width */
     --card-w: calc((100vw - 16px - var(--deck-w) - 5 * 6px) / 4);
     --card-h: calc(var(--card-w) * 1.37);
-    --card-mini-w: 52px;
-    --card-mini-h: 72px;
-    --deck-w: 15vw;
-    --chip: 46px;
-    --chip-sm: 30px;
-    --noble: 70px;
-    --cost-b: 17px;
+    --card-mini-w: 60px;
+    --card-mini-h: 84px;
+    --deck-w: 13vw;
+    --chip: min(52px, calc((100vw - 60px) / 6));
+    --chip-sm: 38px;
+    --noble: 86px;
+    --cost-b: 20px;
     font-size: 13px;
   }
 
@@ -1199,8 +1199,8 @@ button.pp-token:hover { transform: translateY(-2px); }
     flex-wrap: wrap;
     justify-content: center;
     align-items: center;
-    gap: 9px;
-    padding: 9px 8px;
+    gap: 6px;
+    padding: 9px 6px;
   }
   .bank-title { display: none; }
   .take-confirm { width: auto; flex-direction: row; gap: 8px; }
@@ -1212,14 +1212,15 @@ button.pp-token:hover { transform: translateY(-2px); }
   .dev-card { border-radius: 8px; }
   .dev-card::after { inset: 3px; border-radius: 5px; }
   .dev-card .card-head { padding: 4px 5px 2px; }
-  .card-pts { font-size: 1.15rem; }
+  .card-pts { font-size: 1.55rem; }
   .dev-card .card-head .gem-art {
-    width: calc(var(--card-w) * 0.26);
-    height: calc(var(--card-w) * 0.26);
+    width: calc(var(--card-w) * 0.32);
+    height: calc(var(--card-w) * 0.32);
   }
   .card-costs { bottom: 4px; left: 4px; gap: 3px; }
-  .cost-bubble { font-size: 0.66rem; border-width: 1px; }
-  .dev-card.mini .cost-bubble { width: 13px; height: 13px; font-size: 0.55rem; }
+  .cost-bubble { font-size: 0.82rem; border-width: 1.5px; }
+  .dev-card.mini .cost-bubble { width: 15px; height: 15px; font-size: 0.6rem; }
+  .dev-card.mini .card-pts { font-size: 1rem; }
 
   .card-actions { bottom: -8px; }
   .card-actions button { padding: 8px 12px; font-size: 0.78rem; }
@@ -1228,15 +1229,18 @@ button.pp-token:hover { transform: translateY(-2px); }
   .deck-count { font-size: 0.62rem; padding: 1px 6px; bottom: 5px; right: 5px; }
 
   .nobles-row { gap: 8px; }
-  .noble-tile { padding: 5px 4px 4px; border-radius: 8px; }
-  .noble-pts { font-size: 0.85rem; top: 2px; left: 5px; }
-  .noble-crown { font-size: 1.1rem; }
+  .noble-tile { padding: 5px 4px 4px; border-radius: 9px; }
+  .noble-pts { font-size: 1.05rem; top: 2px; left: 6px; }
+  .noble-crown { font-size: 1.3rem; }
   .noble-reqs { gap: 3px; }
-  .noble-req { font-size: 0.6rem; gap: 2px; padding: 1px 3px 1px 2px; }
-  .noble-req .gem-art { width: 10px; height: 10px; }
+  .noble-req { font-size: 0.74rem; gap: 2px; padding: 1px 4px 1px 2px; }
+  .noble-req .gem-art { width: 13px; height: 13px; }
 
-  .bonus-chip { min-width: 26px; height: 32px; font-size: 0.8rem; }
-  .pp-score { font-size: 1.25rem; }
+  .bonus-chip { min-width: 32px; height: 40px; font-size: 1.05rem; }
+  .pp-name { font-size: 1.15rem; }
+  .pp-score { font-size: 1.7rem; }
+  .pp-token .token-count { min-width: 20px; height: 20px; font-size: 0.78rem; }
+  .token-pile .token-count { min-width: 24px; height: 24px; font-size: 0.9rem; }
 
   .game-log { max-height: 76px; font-size: 0.72rem; padding: 6px 10px; }
 
@@ -1269,6 +1273,7 @@ button.pp-token:hover { transform: translateY(-2px); }
   .noble-req { font-size: 0.55rem; }
 }
 
+
 /* ==========================================================================
    Fit-to-screen mode: everything visible without scrolling.
    Toggled from the top bar; on by default on phones.
@@ -1282,28 +1287,28 @@ button.pp-token:hover { transform: translateY(-2px); }
 .game-screen.fit .player-panel:not(.active) .pp-label { display: none; }
 .game-screen.fit .player-panel:not(.active) .pp-row { margin-top: 3px; gap: 3px; }
 .game-screen.fit .player-panel:not(.active) .pp-head .pp-kind { font-size: 0.58rem; }
-.game-screen.fit .player-panel:not(.active) .pp-score { font-size: 1.1rem; }
+.game-screen.fit .player-panel:not(.active) .pp-score { font-size: 1.35rem; }
 .game-screen.fit .player-panel:not(.active) .bonus-chip {
-  min-width: 20px;
-  height: 24px;
-  font-size: 0.68rem;
-  border-radius: 4px;
+  min-width: 26px;
+  height: 32px;
+  font-size: 0.88rem;
+  border-radius: 5px;
 }
 .game-screen.fit .player-panel:not(.active) .token-chip,
 .game-screen.fit .player-panel:not(.active) .token-chip.small {
-  width: 22px;
-  height: 22px;
+  width: 28px;
+  height: 28px;
 }
 .game-screen.fit .player-panel:not(.active) .token-count {
-  min-width: 13px;
-  height: 13px;
-  font-size: 0.58rem;
+  min-width: 16px;
+  height: 16px;
+  font-size: 0.66rem;
   right: -3px;
   bottom: -3px;
 }
 .game-screen.fit .player-panel:not(.active) .dev-card.mini {
-  width: 26px;
-  height: 36px;
+  width: 32px;
+  height: 44px;
   border-radius: 4px;
 }
 .game-screen.fit .player-panel:not(.active) .dev-card.mini .card-costs,
@@ -1318,17 +1323,24 @@ button.pp-token:hover { transform: translateY(-2px); }
     padding: 6px 8px;
     padding-bottom: calc(6px + env(safe-area-inset-bottom));
     gap: 6px;
-    --noble: 50px;
-    /* height-aware card size: whichever of width/height is tighter wins */
+    /* height-aware card size: whichever of width/height is tighter wins,
+       with a floor so cards stay tappable (slight scroll beats unusable) */
     --card-w: min(
       calc((100vw - 16px - var(--deck-w) - 5 * 6px) / 4),
-      calc((100dvh - 486px) / 3 * 0.72)
+      max(56px, calc((100dvh - 600px) / 3 * 0.72))
     );
   }
   .game-screen.fit .game-topbar h1 { display: none; }
+  /* controls + instruction live at the bottom, in thumb reach */
+  .game-screen.fit .game-topbar {
+    order: 10;
+    margin-top: auto;
+    padding-top: 2px;
+  }
+  .game-screen.fit .topbar-status { order: 0; }
   .game-screen.fit .game-main { gap: 7px; }
-  .game-screen.fit .bank-column { padding: 6px 6px; gap: 7px; }
-  .game-screen.fit .nobles-row { gap: 6px; }
+  .game-screen.fit .bank-column { padding: 6px 5px; gap: 6px; }
+  .game-screen.fit .nobles-row { gap: 7px; }
   .game-screen.fit .players-column { gap: 6px; }
 }
 
@@ -1411,6 +1423,41 @@ button.pp-token:hover { transform: translateY(-2px); }
   .game-screen.fit .player-panel.active .token-chip.small { width: 24px; height: 24px; }
   .game-screen.fit .player-panel.active .pp-label { font-size: 0.5rem; }
   .game-screen.fit .player-panel.active .dev-card.mini { width: var(--card-mini-w); height: var(--card-mini-h); }
+}
+
+/* shorter phones: scale the enlarged elements back down so fit mode still
+   avoids scrolling (must come after the main fit blocks to win the cascade) */
+@media (max-width: 760px) and (max-height: 730px) {
+  .game-screen.fit {
+    --noble: 66px;
+    --chip: 46px;
+    --chip-sm: 32px;
+    --cost-b: 17px;
+    --card-w: min(
+      calc((100vw - 16px - var(--deck-w) - 5 * 6px) / 4),
+      max(54px, calc((100dvh - 450px) / 3 * 0.72))
+    );
+    gap: 5px;
+  }
+  .game-screen.fit .card-pts { font-size: 1.25rem; }
+  .game-screen.fit .noble-req { font-size: 0.6rem; }
+  .game-screen.fit .noble-req .gem-art { width: 10px; height: 10px; }
+
+  /* on short screens even the active panel goes compact */
+  .game-screen.fit .player-panel { padding: 5px 10px 6px; }
+  .game-screen.fit .player-panel .pp-label { display: none; }
+  .game-screen.fit .player-panel .pp-row { margin-top: 3px; gap: 3px; }
+  .game-screen.fit .player-panel .bonus-chip { min-width: 26px; height: 32px; font-size: 0.85rem; }
+  .game-screen.fit .player-panel .token-chip,
+  .game-screen.fit .player-panel .token-chip.small { width: 28px; height: 28px; }
+  .game-screen.fit .player-panel .token-count { min-width: 16px; height: 16px; font-size: 0.66rem; }
+  .game-screen.fit .player-panel .pp-score { font-size: 1.35rem; }
+  .game-screen.fit .player-panel.active .dev-card.mini { width: 40px; height: 55px; }
+  .game-screen.fit .player-panel:not(.active) .dev-card.mini { width: 32px; height: 44px; }
+
+  .game-screen.fit .game-topbar { row-gap: 2px; }
+  .game-screen.fit .topbar-status { font-size: 0.8rem; }
+  .game-screen.fit .icon-btn { padding: 4px 8px; font-size: 0.7rem; }
 }
 
 @media (prefers-reduced-motion: reduce) {

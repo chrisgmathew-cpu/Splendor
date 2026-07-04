@@ -29,9 +29,9 @@ npm test         # engine test suite (rules + AI self-play)
 
 The production build is a **single HTML file** (`dist/index.html`) with everything inlined — open it directly in any browser, no server needed. The build also emits `manifest.webmanifest`, `sw.js`, and icons alongside it, so hosting the `dist/` folder anywhere over HTTPS gives you an installable, offline-capable PWA.
 
-## Hosting (private, on Vercel)
+## Hosting (Vercel)
 
-The repo is ready to deploy to Vercel behind a shared username/password: [`middleware.ts`](middleware.ts) enforces HTTP Basic Auth at the edge before any file is served, using the `BASIC_AUTH_USER` / `BASIC_AUTH_PASSWORD` environment variables on the Vercel project. Works on the free Hobby plan; local `npm run dev` is unaffected. Full setup steps in [docs/HOSTING.md](docs/HOSTING.md).
+Deploys to Vercel as a static Vite site (build `npm run build`, output `dist`). Access protection is **currently disabled** — Basic Auth breaks re-login in installed iOS PWAs. See [docs/HOSTING.md](docs/HOSTING.md) for how to re-enable it or use a PWA-friendly alternative.
 
 ## How to play
 
