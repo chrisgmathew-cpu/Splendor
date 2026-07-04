@@ -155,13 +155,14 @@ button {
   flex-direction: column;
   align-items: center;
   padding: 48px 20px 60px;
+  padding-top: calc(48px + env(safe-area-inset-top));
   padding-bottom: calc(60px + env(safe-area-inset-bottom));
   gap: 26px;
 }
 
 /* compress the menu on short screens so it fits without scrolling */
 @media (max-height: 900px) {
-  .menu-screen { padding-top: 20px; gap: 14px; }
+  .menu-screen { padding-top: calc(20px + env(safe-area-inset-top)); gap: 14px; }
   .menu-emblem { width: 84px; height: 84px; }
   .menu-flourish { display: none; }
   .menu-logo h1 { font-size: clamp(2.2rem, 6vw, 3.4rem); }
@@ -342,6 +343,7 @@ button {
   display: flex;
   flex-direction: column;
   padding: 12px 16px 18px;
+  padding-top: calc(12px + env(safe-area-inset-top));
   padding-bottom: calc(18px + env(safe-area-inset-bottom));
   gap: 10px;
   max-width: 1500px;
@@ -1338,13 +1340,17 @@ button.pp-token:hover { transform: translateY(-2px); }
 @media (max-width: 760px) {
   .game-screen.fit {
     padding: 6px 8px;
+    padding-top: calc(6px + env(safe-area-inset-top));
     padding-bottom: calc(6px + env(safe-area-inset-bottom));
     gap: 6px;
     /* height-aware card size: whichever of width/height is tighter wins,
        with a floor so cards stay tappable (slight scroll beats unusable) */
     --card-w: min(
       calc((100vw - 16px - var(--deck-w) - 5 * 6px) / 4),
-      max(56px, calc((100dvh - 600px) / 3 * 0.72))
+      max(
+        56px,
+        calc((100dvh - 600px - env(safe-area-inset-top) - env(safe-area-inset-bottom)) / 3 * 0.72)
+      )
     );
   }
   .game-screen.fit .game-topbar h1 { display: none; }
@@ -1366,19 +1372,21 @@ button.pp-token:hover { transform: translateY(-2px); }
 @media (max-height: 540px) {
   .game-screen.fit {
     padding: 4px 10px;
+    padding-top: calc(4px + env(safe-area-inset-top));
     padding-left: calc(10px + env(safe-area-inset-left));
     padding-right: calc(10px + env(safe-area-inset-right));
     padding-bottom: calc(4px + env(safe-area-inset-bottom));
     gap: 4px;
     font-size: 12px;
-    --card-h: calc((100dvh - 86px) / 3);
+    --safe-v: calc(env(safe-area-inset-top) + env(safe-area-inset-bottom));
+    --card-h: calc((100dvh - 86px - var(--safe-v)) / 3);
     --card-w: calc(var(--card-h) * 0.73);
     --card-mini-w: 38px;
     --card-mini-h: 52px;
     --deck-w: calc(var(--card-w) * 0.55);
     /* vertical noble column: up to 5 tiles share the height */
-    --noble: calc((100dvh - 76px) / 5);
-    --chip: min(50px, calc((100dvh - 46px) / 6 - 11px));
+    --noble: calc((100dvh - 76px - var(--safe-v)) / 5);
+    --chip: min(50px, calc((100dvh - 46px - var(--safe-v)) / 6 - 11px));
     --chip-sm: 30px;
     --cost-b: 17px;
   }
@@ -1494,7 +1502,10 @@ button.pp-token:hover { transform: translateY(-2px); }
     --cost-b: 17px;
     --card-w: min(
       calc((100vw - 16px - var(--deck-w) - 5 * 6px) / 4),
-      max(54px, calc((100dvh - 450px) / 3 * 0.72))
+      max(
+        54px,
+        calc((100dvh - 450px - env(safe-area-inset-top) - env(safe-area-inset-bottom)) / 3 * 0.72)
+      )
     );
     gap: 5px;
   }
