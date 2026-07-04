@@ -33,6 +33,17 @@ import { PlayerPanel } from './PlayerPanel';
 import { flyClone, flyCloneMany, pulse } from './fly';
 
 const AI_DELAY = 1000;
+const FIT_KEY = 'splendor-fit';
+
+function initialFit(): boolean {
+  try {
+    const saved = localStorage.getItem(FIT_KEY);
+    if (saved !== null) return saved === '1';
+  } catch {
+    /* storage unavailable (sandboxed host) */
+  }
+  return window.matchMedia('(max-width: 760px), (max-height: 540px)').matches;
+}
 
 interface Banner {
   title: string;
@@ -53,7 +64,18 @@ export function GameScreen({
   const [selectedCard, setSelectedCard] = useState<number | null>(null);
   const [selectedReserved, setSelectedReserved] = useState<number | null>(null);
   const [banner, setBanner] = useState<Banner | null>(null);
+  const [fit, setFit] = useState<boolean>(initialFit);
   const rngRef = useRef(makeRng(seed ^ 0x9e3779b9));
+
+  const toggleFit = () =>
+    setFit((f) => {
+      try {
+        localStorage.setItem(FIT_KEY, f ? '0' : '1');
+      } catch {
+        /* ignore */
+      }
+      return !f;
+    });
   const bannerTimer = useRef<number | undefined>(undefined);
 
   const current = state.players[state.current];
@@ -303,10 +325,17 @@ export function GameScreen({
   })();
 
   return (
-    <div className="game-screen">
+    <div className={`game-screen ${fit ? 'fit' : ''}`}>
       <div className="game-topbar">
         <h1 className="gold-text">Splendor</h1>
         <div className="topbar-status">{status}</div>
+        <button
+          className="icon-btn"
+          onClick={toggleFit}
+          title={fit ? 'Fit to screen: on — tap for full layout with scrolling' : 'Fit everything on screen without scrolling'}
+        >
+          ⛶ {fit ? 'Fit ✓' : 'Fit'}
+        </button>
         <button className="icon-btn" onClick={onExit}>
           ↩ New Game
         </button>
