@@ -27,6 +27,10 @@ npm test         # engine test suite (rules + AI self-play)
 
 The production build is a **single HTML file** (`dist/index.html`) with everything inlined — open it directly in any browser, no server needed.
 
+## Hosting (private, on Vercel)
+
+The repo is ready to deploy to Vercel behind a shared username/password: [`middleware.ts`](middleware.ts) enforces HTTP Basic Auth at the edge before any file is served, using the `BASIC_AUTH_USER` / `BASIC_AUTH_PASSWORD` environment variables on the Vercel project. Works on the free Hobby plan; local `npm run dev` is unaffected. Full setup steps in [docs/HOSTING.md](docs/HOSTING.md).
+
 ## How to play
 
 First to **15 prestige points** triggers the final round; everyone gets an equal number of turns, then the highest score wins (fewest cards breaks ties). On your turn, do one of:
