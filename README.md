@@ -29,10 +29,6 @@ npm test         # engine test suite (rules + AI self-play)
 
 The production build is a **single HTML file** (`dist/index.html`) with everything inlined — open it directly in any browser, no server needed. The build also emits `manifest.webmanifest`, `sw.js`, and icons alongside it, so hosting the `dist/` folder anywhere over HTTPS gives you an installable, offline-capable PWA.
 
-### Deploying (GitHub Pages)
-
-A workflow at `.github/workflows/deploy.yml` builds and publishes `dist/` on every push to `main`. One-time setup: repository **Settings → Pages → Source → GitHub Actions**. After the first run the game is live (and installable as an app) at your Pages URL.
-
 ## Hosting (private, on Vercel)
 
 The repo is ready to deploy to Vercel behind a shared username/password: [`middleware.ts`](middleware.ts) enforces HTTP Basic Auth at the edge before any file is served, using the `BASIC_AUTH_USER` / `BASIC_AUTH_PASSWORD` environment variables on the Vercel project. Works on the free Hobby plan; local `npm run dev` is unaffected. Full setup steps in [docs/HOSTING.md](docs/HOSTING.md).
