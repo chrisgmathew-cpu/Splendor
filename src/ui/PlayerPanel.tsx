@@ -1,7 +1,8 @@
 import { Card, GemColor, GEM_COLORS, PlayerState, TokenColor, TOKEN_COLORS } from '../engine/types';
 import { bonuses, canAfford, count, score } from '../engine/game';
-import { Gem } from './Gem';
+import { TokenChip } from './Gem';
 import { CardView } from './CardView';
+import { crownImg } from './assets';
 
 interface PlayerPanelProps {
   player: PlayerState;
@@ -71,16 +72,12 @@ export function PlayerPanel({
         {TOKEN_COLORS.filter((c) => count(player.tokens, c) > 0).map((c: TokenColor) =>
           discardMode ? (
             <button key={c} className="pp-token" onClick={() => onDiscardToken?.(c)}>
-              <span className="token-chip small">
-                <Gem color={c} size={20} />
-              </span>
+              <TokenChip color={c} size={34} />
               <span className="token-count">{count(player.tokens, c)}</span>
             </button>
           ) : (
             <span key={c} className="pp-token">
-              <span className="token-chip small">
-                <Gem color={c} size={20} />
-              </span>
+              <TokenChip color={c} size={34} />
               <span className="token-count">{count(player.tokens, c)}</span>
             </span>
           ),
@@ -127,7 +124,7 @@ export function PlayerPanel({
             <div className="pp-nobles">
               {player.nobles.map((n) => (
                 <span key={n.id} className="pp-noble-mini" title="Noble (+3)">
-                  ♛
+                  {crownImg() ? <img src={crownImg()} alt="noble crown" /> : '♛'}
                 </span>
               ))}
             </div>

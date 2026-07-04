@@ -1,6 +1,7 @@
 import { useState } from 'react';
 import { AiDifficulty, PlayerConfig, TOKEN_COLORS } from '../engine/types';
-import { Gem } from './Gem';
+import { TokenChip } from './Gem';
+import { emblemImg, flourishImg } from './assets';
 
 type SeatKind = 'human' | 'ai' | 'off';
 
@@ -42,13 +43,15 @@ export function MenuScreen({ onStart }: { onStart: (players: PlayerConfig[]) => 
   return (
     <div className="menu-screen">
       <div className="menu-logo">
+        {emblemImg() && <img className="menu-emblem" src={emblemImg()} alt="" />}
         <div className="menu-gems">
           {TOKEN_COLORS.filter((c) => c !== 'gold').map((c) => (
-            <Gem key={c} color={c} size={44} />
+            <TokenChip key={c} color={c} size={54} />
           ))}
         </div>
         <h1 className="gold-text">Splendor</h1>
         <div className="tagline">Gems · Merchants · Nobility</div>
+        {flourishImg() && <img className="menu-flourish" src={flourishImg()} alt="" />}
       </div>
 
       <div className="setup-panel">

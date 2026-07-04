@@ -25,7 +25,8 @@ import {
   validateAction,
 } from '../engine/game';
 import { chooseAction, chooseDiscards, chooseNoble } from '../engine/ai';
-import { Gem, GEM_LABEL } from './Gem';
+import { GEM_LABEL, TokenChip } from './Gem';
+import { cardBackImg } from './assets';
 import { CardView } from './CardView';
 import { NobleView } from './NobleView';
 import { PlayerPanel } from './PlayerPanel';
@@ -84,7 +85,7 @@ export function GameScreen({
         // Fire animations from the still-mounted source elements.
         if (action.type === 'take3') {
           action.colors.forEach((c, i) =>
-            flyClone(document.querySelector(`[data-gem-pile="${c}"] svg`), target, {
+            flyClone(document.querySelector(`[data-gem-pile="${c}"] .token-chip`), target, {
               delay: i * 90,
               scale: 0.7,
               fadeOut: true,
@@ -92,7 +93,7 @@ export function GameScreen({
           );
         } else if (action.type === 'take2') {
           flyCloneMany(
-            document.querySelector(`[data-gem-pile="${action.color}"] svg`),
+            document.querySelector(`[data-gem-pile="${action.color}"] .token-chip`),
             target,
             2,
             { scale: 0.7, fadeOut: true },
@@ -115,7 +116,7 @@ export function GameScreen({
               fadeOut: true,
             });
           }
-          flyClone(document.querySelector(`[data-gem-pile="gold"] svg`), target, {
+          flyClone(document.querySelector(`[data-gem-pile="gold"] .token-chip`), target, {
             delay: 140,
             scale: 0.7,
             fadeOut: true,
@@ -212,7 +213,7 @@ export function GameScreen({
     if (!humanDiscard || overBy <= 0) return;
     if ((pendingDiscards[color] ?? 0) >= count(current.tokens, color)) return;
     flyClone(
-      document.querySelector(`[data-fly-target="player-${state.current}-tokens"] svg`),
+      document.querySelector(`[data-fly-target="player-${state.current}-tokens"] .token-chip`),
       `bank-${color}`,
       { scale: 0.8, fadeOut: true },
     );
@@ -329,9 +330,7 @@ export function GameScreen({
                 title={`${GEM_LABEL[c]} — ${n} left${c === 'gold' ? ' (reserve a card to gain gold)' : ''}`}
                 onClick={() => c !== 'gold' && toggleToken(c)}
               >
-                <span className="token-chip">
-                  <Gem color={c} size={30} />
-                </span>
+                <TokenChip color={c} />
                 <span className="token-count">{n}</span>
                 {selCount > 0 && <span className="sel-badge">{selCount}</span>}
               </button>
@@ -381,9 +380,20 @@ export function GameScreen({
                     }
                     onClick={() => applyWithFx({ type: 'reserve', tier, cardId: null })}
                   >
-                    <span className="deck-card deck-under2" />
-                    <span className="deck-card deck-under" />
-                    <span className="deck-card" />
+                    {(() => {
+                      const back = cardBackImg(tier);
+                      const style = back
+                        ? { backgroundImage: `url(${back})` }
+                        : undefined;
+                      const cls = back ? 'deck-card art' : 'deck-card';
+                      return (
+                        <>
+                          <span className={`${cls} deck-under2`} style={style} />
+                          <span className={`${cls} deck-under`} style={style} />
+                          <span className={cls} style={style} />
+                        </>
+                      );
+                    })()}
                     <span className="deck-tier-label">{'◆'.repeat(tier)}</span>
                     <span className="deck-count">{deck.length}</span>
                   </button>

@@ -1,4 +1,5 @@
 import { TokenColor } from '../engine/types';
+import { gemImg, tokenImg } from './assets';
 
 /** Palette per gem: [deep, mid, light, sparkle] */
 export const GEM_PALETTE: Record<TokenColor, [string, string, string, string]> = {
@@ -26,10 +27,55 @@ interface GemProps {
 }
 
 /**
- * A faceted jewel drawn in SVG. Each color uses the same cut with its own
- * palette; gold renders as a coin-like nugget to read as the joker.
+ * A gem icon. Uses the AI-painted artwork when bundled; falls back to the
+ * hand-drawn SVG cut otherwise.
  */
 export function Gem({ color, size = 26 }: GemProps) {
+  const url = gemImg(color);
+  if (url) {
+    return (
+      <img
+        src={url}
+        width={size}
+        height={size}
+        className="gem-art"
+        alt={GEM_LABEL[color]}
+        draggable={false}
+      />
+    );
+  }
+  return <GemSvg color={color} size={size} />;
+}
+
+/**
+ * A full token chip (the coin-like game piece). Uses painted token art when
+ * available, else the styled CSS chip with an SVG gem.
+ */
+export function TokenChip({
+  color,
+  size = 52,
+  gemSize,
+}: {
+  color: TokenColor;
+  size?: number;
+  gemSize?: number;
+}) {
+  const url = tokenImg(color);
+  if (url) {
+    return (
+      <span className="token-chip art" style={{ width: size, height: size }}>
+        <img src={url} alt={GEM_LABEL[color]} draggable={false} />
+      </span>
+    );
+  }
+  return (
+    <span className={`token-chip ${size <= 40 ? 'small' : ''}`}>
+      <GemSvg color={color} size={gemSize ?? Math.round(size * 0.58)} />
+    </span>
+  );
+}
+
+function GemSvg({ color, size = 26 }: GemProps) {
   const [deep, mid, light, sparkle] = GEM_PALETTE[color];
   const uid = `gem-${color}`;
 

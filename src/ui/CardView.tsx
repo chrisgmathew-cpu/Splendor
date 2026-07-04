@@ -1,5 +1,6 @@
 import { Card, GemColor, GEM_COLORS } from '../engine/types';
 import { Gem } from './Gem';
+import { cardImg } from './assets';
 
 interface CardViewProps {
   card: Card;
@@ -24,9 +25,11 @@ export function CardView({
   onClick,
   children,
 }: CardViewProps) {
+  const art = cardImg(card.tier, card.bonus);
   const classes = [
     'dev-card',
     `c-${card.bonus}`,
+    art ? 'has-art' : '',
     mini ? 'mini' : '',
     affordable ? 'affordable' : '',
     selected ? 'selected' : '',
@@ -41,7 +44,10 @@ export function CardView({
       className={classes}
       disabled={disabled}
       onClick={onClick}
-      style={dealDelay ? { animationDelay: `${dealDelay}ms` } : undefined}
+      style={{
+        ...(dealDelay ? { animationDelay: `${dealDelay}ms` } : undefined),
+        ...(art ? { backgroundImage: `url(${art})` } : undefined),
+      }}
       data-card-id={card.id}
       data-fly-target={flyTarget}
       aria-label={`Tier ${card.tier} ${card.bonus} card, ${card.points} points`}

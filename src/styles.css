@@ -64,6 +64,28 @@ button {
   cursor: pointer;
 }
 
+/* AI-painted table cloth behind everything */
+.table-underlay {
+  position: fixed;
+  inset: 0;
+  z-index: -1;
+  background-size: cover;
+  background-position: center;
+}
+.table-underlay::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: radial-gradient(ellipse at center, rgba(7, 19, 18, 0.42) 0%, rgba(5, 13, 12, 0.78) 80%);
+}
+
+/* painted gem icons */
+.gem-art {
+  display: block;
+  object-fit: contain;
+  filter: drop-shadow(0 1px 2px rgba(0, 0, 0, 0.55));
+}
+
 /* ==========================================================================
    Gold text + shared ornaments
    ========================================================================== */
@@ -109,6 +131,22 @@ button {
 .menu-logo {
   text-align: center;
   animation: riseIn 0.9s cubic-bezier(0.2, 0.9, 0.3, 1) both;
+}
+
+.menu-emblem {
+  width: 132px;
+  height: 132px;
+  object-fit: contain;
+  margin-bottom: -6px;
+  filter: drop-shadow(0 10px 20px rgba(0, 0, 0, 0.6));
+  animation: floaty 4.2s ease-in-out infinite;
+}
+.menu-flourish {
+  width: min(420px, 80vw);
+  margin-top: 6px;
+  object-fit: contain;
+  opacity: 0.9;
+  filter: drop-shadow(0 3px 6px rgba(0, 0, 0, 0.5));
 }
 
 .menu-logo h1 {
@@ -350,6 +388,24 @@ button {
 }
 .token-chip.small { width: 34px; height: 34px; border-width: 2px; box-shadow: 0 2px 0 rgba(0,0,0,0.5), 0 4px 8px rgba(0,0,0,0.4); }
 
+/* painted token art replaces the CSS chip entirely */
+.token-chip.art {
+  background: none;
+  border: none;
+  box-shadow: none;
+}
+.token-chip.art img {
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+  display: block;
+  filter: drop-shadow(0 4px 7px rgba(0, 0, 0, 0.6));
+}
+.token-pile.selected .token-chip.art {
+  border-radius: 50%;
+  box-shadow: 0 0 0 3px rgba(246, 214, 124, 0.55), 0 0 18px rgba(246, 214, 124, 0.35);
+}
+
 .token-count {
   position: absolute;
   right: -5px;
@@ -452,6 +508,22 @@ button {
   animation: dealIn 0.6s cubic-bezier(0.2, 0.9, 0.3, 1) both;
 }
 
+/* painted noble portraits */
+.noble-tile.has-art {
+  background-size: cover;
+  background-position: center 20%;
+}
+.noble-tile.has-art::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  border-radius: inherit;
+  background: linear-gradient(180deg, rgba(0, 0, 0, 0.28) 0%, transparent 30%, transparent 55%, rgba(0, 0, 0, 0.62) 100%);
+  pointer-events: none;
+}
+.noble-tile .noble-pts,
+.noble-tile .noble-reqs { position: relative; z-index: 1; }
+
 .noble-crown {
   font-size: 1.5rem;
   line-height: 1;
@@ -523,6 +595,13 @@ button {
   opacity: 0.9;
   text-shadow: 0 2px 4px rgba(0, 0, 0, 0.6);
 }
+/* painted card backs */
+.deck-card.art {
+  background-size: cover;
+  background-position: center;
+}
+.deck-card.art::after { content: none; }
+
 .deck-stack .deck-under { transform: translate(3px, 3px); opacity: 0.6; }
 .deck-stack .deck-under2 { transform: translate(6px, 6px); opacity: 0.35; }
 .deck-count {
@@ -650,6 +729,29 @@ button {
 .cost-bubble.b-green { background: radial-gradient(circle at 35% 30%, #37c274, #0a5b30); }
 .cost-bubble.b-red { background: radial-gradient(circle at 35% 30%, #e75a6f, #7c0f22); }
 .cost-bubble.b-black { background: radial-gradient(circle at 35% 30%, #4d4d60, #0c0c14); }
+
+/* painted card faces */
+.dev-card.has-art {
+  background-size: cover;
+  background-position: center;
+  color: #fff;
+}
+/* replace the filigree stripes with readability scrims over the painting */
+.dev-card.has-art::before {
+  background:
+    linear-gradient(180deg, rgba(5, 8, 12, 0.55) 0%, rgba(5, 8, 12, 0.12) 22%, transparent 34%),
+    linear-gradient(0deg, rgba(5, 8, 12, 0.5) 0%, rgba(5, 8, 12, 0.1) 26%, transparent 40%);
+}
+.dev-card.has-art .card-head { background: none; }
+.dev-card.c-white.has-art .card-head { background: none; }
+.dev-card.has-art .card-pts,
+.dev-card.c-white.has-art .card-pts {
+  color: #fff;
+  text-shadow: 0 2px 4px rgba(0, 0, 0, 0.9), 0 0 12px rgba(0, 0, 0, 0.6);
+}
+.dev-card.has-art .card-head .gem-art {
+  filter: drop-shadow(0 2px 4px rgba(0, 0, 0, 0.9));
+}
 
 .dev-card:not(:disabled):hover {
   transform: translateY(-7px) scale(1.045);
@@ -823,6 +925,7 @@ button.pp-token:hover { transform: translateY(-2px); }
   background: linear-gradient(165deg, #2e2438, #171020);
   border: 1px solid rgba(246, 214, 124, 0.5);
 }
+.pp-noble-mini img { width: 19px; height: 19px; object-fit: contain; }
 
 .pp-reserved { display: flex; gap: 5px; }
 .reserved-wrap { position: relative; }
