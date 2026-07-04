@@ -371,7 +371,10 @@ button {
   transition: transform 0.16s;
 }
 .token-pile:not(:disabled):hover { transform: translateY(-3px) scale(1.07); }
-.token-pile:disabled { cursor: default; opacity: 0.45; filter: saturate(0.5); }
+/* not clickable right now (AI turn, gold pile): only slightly muted */
+.token-pile:disabled { cursor: default; opacity: 0.82; }
+/* actually out of tokens: clearly dimmed */
+.token-pile.depleted { opacity: 0.32; filter: saturate(0.35); }
 
 .token-chip {
   width: 52px;
@@ -749,9 +752,16 @@ button {
   color: #fff;
   text-shadow: 0 2px 4px rgba(0, 0, 0, 0.9), 0 0 12px rgba(0, 0, 0, 0.6);
 }
+/* dark badge so the bonus gem reads against busy paintings */
 .dev-card.has-art .card-head .gem-art {
   filter: drop-shadow(0 2px 4px rgba(0, 0, 0, 0.9));
+  background: radial-gradient(circle at 40% 32%, rgba(26, 30, 36, 0.62), rgba(6, 8, 12, 0.82));
+  border: 1px solid rgba(246, 214, 124, 0.55);
+  border-radius: 50%;
+  padding: 3px;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.65);
 }
+.dev-card.mini.has-art .card-head .gem-art { padding: 2px; }
 
 .dev-card:not(:disabled):hover {
   transform: translateY(-7px) scale(1.045);

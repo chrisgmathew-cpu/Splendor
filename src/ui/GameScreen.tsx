@@ -323,7 +323,7 @@ export function GameScreen({
             return (
               <button
                 key={c}
-                className={`token-pile ${selCount > 0 ? 'selected' : ''}`}
+                className={`token-pile ${selCount > 0 ? 'selected' : ''} ${n === 0 ? 'depleted' : ''}`}
                 disabled={!selectable}
                 data-gem-pile={c}
                 data-fly-target={`bank-${c}`}
