@@ -545,7 +545,10 @@ function VictoryOverlay({ state, onExit }: { state: GameState; onExit: () => voi
       <div className="modal">
         <div className="rule-ornament">✦ ✦ ✦</div>
         <h2 className="victory-title gold-text">
-          {state.winners!.map((i) => state.players[i].name).join(' & ')} Triumphs
+          {state.winners!.map((i) => state.players[i].name).join(' & ')}{' '}
+          {state.winners!.length === 1 && state.players[state.winners![0]].name !== 'You'
+            ? 'Triumphs'
+            : 'Triumph'}
         </h2>
         <div className="victory-scores">
           {ranked.map(({ p, i, pts }) => (
