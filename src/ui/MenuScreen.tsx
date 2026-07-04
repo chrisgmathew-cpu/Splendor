@@ -20,7 +20,15 @@ const DEFAULT_SEATS: Seat[] = [
 
 const DIFFICULTIES: AiDifficulty[] = ['easy', 'medium', 'hard'];
 
-export function MenuScreen({ onStart }: { onStart: (players: PlayerConfig[]) => void }) {
+export function MenuScreen({
+  onStart,
+  canResume,
+  onResume,
+}: {
+  onStart: (players: PlayerConfig[]) => void;
+  canResume?: boolean;
+  onResume?: () => void;
+}) {
   const [seats, setSeats] = useState<Seat[]>(DEFAULT_SEATS);
 
   const activeSeats = seats.filter((s) => s.kind !== 'off');
@@ -55,6 +63,11 @@ export function MenuScreen({ onStart }: { onStart: (players: PlayerConfig[]) => 
       </div>
 
       <div className="setup-panel">
+        {canResume && (
+          <button className="resume-btn" onClick={onResume}>
+            ▶ Resume your game in progress
+          </button>
+        )}
         <div className="rule-ornament">✦ Assemble the table ✦</div>
 
         {seats.map((seat, i) => (

@@ -296,6 +296,23 @@ button {
   color: var(--gold-1);
 }
 
+.resume-btn {
+  display: block;
+  width: 100%;
+  margin: 0 0 16px;
+  padding: 12px 18px;
+  border-radius: 10px;
+  font-family: inherit;
+  font-size: 1rem;
+  letter-spacing: 0.08em;
+  color: var(--gold-1);
+  background: linear-gradient(180deg, rgba(246, 214, 124, 0.14), rgba(201, 153, 46, 0.1));
+  border: 1px solid var(--gold-2);
+  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.35);
+  transition: filter 0.2s, transform 0.2s;
+}
+.resume-btn:hover { filter: brightness(1.2); transform: translateY(-1px); }
+
 .start-btn {
   display: block;
   margin: 24px auto 0;

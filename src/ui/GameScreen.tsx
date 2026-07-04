@@ -27,6 +27,7 @@ import {
 import { chooseAction, chooseDiscards, chooseNoble } from '../engine/ai';
 import { GEM_LABEL, TokenChip } from './Gem';
 import { cardBackImg } from './assets';
+import { clearSave, saveGame } from './persist';
 import { CardView } from './CardView';
 import { NobleView } from './NobleView';
 import { PlayerPanel } from './PlayerPanel';
@@ -53,13 +54,15 @@ interface Banner {
 export function GameScreen({
   players,
   seed,
+  initialState,
   onExit,
 }: {
   players: PlayerConfig[];
   seed: number;
+  initialState?: GameState;
   onExit: () => void;
 }) {
-  const [state, setState] = useState<GameState>(() => createGame(players, seed));
+  const [state, setState] = useState<GameState>(() => initialState ?? createGame(players, seed));
   const [selectedTokens, setSelectedTokens] = useState<GemColor[]>([]);
   const [selectedCard, setSelectedCard] = useState<number | null>(null);
   const [selectedReserved, setSelectedReserved] = useState<number | null>(null);
@@ -83,6 +86,12 @@ export function GameScreen({
   const humanDiscard = current.kind === 'human' && state.phase === 'discard';
   const humanNoble = current.kind === 'human' && state.phase === 'noble';
   const aiTurn = current.kind === 'ai' && state.phase !== 'over';
+
+  // Autosave after every change; a finished game clears the save.
+  useEffect(() => {
+    if (state.phase === 'over') clearSave();
+    else saveGame(state, seed);
+  }, [state, seed]);
 
   const showBanner = useCallback((b: Banner, ms = 1900) => {
     setBanner(b);
