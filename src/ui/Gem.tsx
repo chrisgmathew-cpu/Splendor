@@ -53,24 +53,27 @@ export function Gem({ color, size = 26 }: GemProps) {
  */
 export function TokenChip({
   color,
-  size = 52,
-  gemSize,
+  size,
+  small,
 }: {
   color: TokenColor;
+  /** Explicit pixel size; omit to let CSS breakpoints size the chip. */
   size?: number;
-  gemSize?: number;
+  small?: boolean;
 }) {
   const url = tokenImg(color);
+  const cls = small ? 'small' : '';
+  const style = size ? { width: size, height: size } : undefined;
   if (url) {
     return (
-      <span className="token-chip art" style={{ width: size, height: size }}>
+      <span className={`token-chip art ${cls}`} style={style}>
         <img src={url} alt={GEM_LABEL[color]} draggable={false} />
       </span>
     );
   }
   return (
-    <span className={`token-chip ${size <= 40 ? 'small' : ''}`}>
-      <GemSvg color={color} size={gemSize ?? Math.round(size * 0.58)} />
+    <span className={`token-chip ${cls}`} style={style}>
+      <GemSvg color={color} size={small ? 20 : Math.round((size ?? 52) * 0.58)} />
     </span>
   );
 }

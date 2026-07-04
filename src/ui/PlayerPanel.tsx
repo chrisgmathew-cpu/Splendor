@@ -72,12 +72,12 @@ export function PlayerPanel({
         {TOKEN_COLORS.filter((c) => count(player.tokens, c) > 0).map((c: TokenColor) =>
           discardMode ? (
             <button key={c} className="pp-token" onClick={() => onDiscardToken?.(c)}>
-              <TokenChip color={c} size={34} />
+              <TokenChip color={c} small />
               <span className="token-count">{count(player.tokens, c)}</span>
             </button>
           ) : (
             <span key={c} className="pp-token">
-              <TokenChip color={c} size={34} />
+              <TokenChip color={c} small />
               <span className="token-count">{count(player.tokens, c)}</span>
             </span>
           ),

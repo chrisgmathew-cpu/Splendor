@@ -20,6 +20,17 @@
   --c-black-1: #3d3d4d; --c-black-2: #1c1c26; --c-black-3: #101018;
   --c-gold-1: #f3c94f;  --c-gold-2: #c08e18;
 
+  /* component sizing (overridden per breakpoint) */
+  --card-w: 118px;
+  --card-h: 162px;
+  --card-mini-w: 66px;
+  --card-mini-h: 92px;
+  --deck-w: 84px;
+  --chip: 52px;
+  --chip-sm: 34px;
+  --noble: 92px;
+  --cost-b: 24px;
+
   font-size: 15px;
 }
 
@@ -377,8 +388,8 @@ button {
 .token-pile.depleted { opacity: 0.32; filter: saturate(0.35); }
 
 .token-chip {
-  width: 52px;
-  height: 52px;
+  width: var(--chip);
+  height: var(--chip);
   border-radius: 50%;
   display: grid;
   place-items: center;
@@ -389,7 +400,7 @@ button {
   box-shadow: 0 4px 0 rgba(0, 0, 0, 0.55), 0 8px 16px rgba(0, 0, 0, 0.5), inset 0 0 0 2px rgba(246, 214, 124, 0.14);
   position: relative;
 }
-.token-chip.small { width: 34px; height: 34px; border-width: 2px; box-shadow: 0 2px 0 rgba(0,0,0,0.5), 0 4px 8px rgba(0,0,0,0.4); }
+.token-chip.small { width: var(--chip-sm); height: var(--chip-sm); border-width: 2px; box-shadow: 0 2px 0 rgba(0,0,0,0.5), 0 4px 8px rgba(0,0,0,0.4); }
 
 /* painted token art replaces the CSS chip entirely */
 .token-chip.art {
@@ -495,8 +506,8 @@ button {
 }
 
 .noble-tile {
-  width: 92px;
-  height: 92px;
+  width: var(--noble);
+  height: var(--noble);
   border-radius: 10px;
   position: relative;
   background:
@@ -570,7 +581,7 @@ button {
 .tier-row { display: flex; gap: 10px; align-items: stretch; justify-content: center; }
 
 .deck-stack {
-  width: 84px;
+  width: var(--deck-w);
   border-radius: 11px;
   position: relative;
   border: none;
@@ -638,8 +649,8 @@ button {
    ========================================================================== */
 
 .dev-card {
-  width: 118px;
-  height: 162px;
+  width: var(--card-w);
+  height: var(--card-h);
   border-radius: 11px;
   position: relative;
   border: 1.5px solid rgba(255, 255, 255, 0.16);
@@ -724,8 +735,8 @@ button {
 }
 
 .cost-bubble {
-  width: 24px;
-  height: 24px;
+  width: var(--cost-b);
+  height: var(--cost-b);
   border-radius: 50%;
   display: grid;
   place-items: center;
@@ -805,7 +816,7 @@ button {
 }
 .dev-card.selected .card-sheen { display: none; }
 
-.dev-card.mini { width: 66px; height: 92px; border-radius: 8px; animation: none; }
+.dev-card.mini { width: var(--card-mini-w); height: var(--card-mini-h); border-radius: 8px; animation: none; }
 .dev-card.mini .card-pts { font-size: 1.05rem; }
 .dev-card.mini .cost-bubble { width: 15px; height: 15px; font-size: 0.58rem; border-width: 1px; }
 .dev-card.mini .card-costs { bottom: 4px; left: 4px; gap: 2px; }
@@ -1106,6 +1117,128 @@ button.pp-token:hover { transform: translateY(-2px); }
 ::-webkit-scrollbar { width: 8px; height: 8px; }
 ::-webkit-scrollbar-thumb { background: rgba(246, 214, 124, 0.25); border-radius: 4px; }
 ::-webkit-scrollbar-track { background: rgba(0, 0, 0, 0.25); }
+
+/* ==========================================================================
+   Responsive: tablets and phone landscape
+   ========================================================================== */
+
+@media (max-width: 1100px) {
+  :root {
+    --card-w: 104px;
+    --card-h: 143px;
+    --deck-w: 72px;
+    --noble: 82px;
+  }
+}
+
+/* ==========================================================================
+   Responsive: phone portrait — single column, horizontal bank,
+   cards sized to the viewport
+   ========================================================================== */
+
+@media (max-width: 760px) {
+  :root {
+    /* deck + 4 cards + gaps must fit the viewport width */
+    --card-w: calc((100vw - 16px - var(--deck-w) - 5 * 6px) / 4);
+    --card-h: calc(var(--card-w) * 1.37);
+    --card-mini-w: 52px;
+    --card-mini-h: 72px;
+    --deck-w: 15vw;
+    --chip: 46px;
+    --chip-sm: 30px;
+    --noble: 70px;
+    --cost-b: 17px;
+    font-size: 13px;
+  }
+
+  .game-screen { padding: 8px 8px 14px; gap: 8px; }
+
+  .game-topbar { flex-wrap: wrap; row-gap: 4px; }
+  .game-topbar h1 { font-size: 1.05rem; }
+  .topbar-status { font-size: 0.88rem; order: 3; flex-basis: 100%; }
+  .icon-btn { padding: 5px 9px; font-size: 0.75rem; margin-left: auto; }
+
+  /* stack: board first, bank under it (thumb reach), players last */
+  .game-main { display: flex; flex-direction: column; gap: 10px; }
+  .board-center { order: 0; }
+  .bank-column { order: 1; }
+  .players-column { order: 2; flex-direction: column; }
+  .players-column .player-panel { flex: none; }
+
+  .bank-column {
+    flex-direction: row;
+    flex-wrap: wrap;
+    justify-content: center;
+    align-items: center;
+    gap: 9px;
+    padding: 9px 8px;
+  }
+  .bank-title { display: none; }
+  .take-confirm { width: auto; flex-direction: row; gap: 8px; }
+  .take-confirm button { width: auto; padding: 8px 14px; }
+
+  .card-grid { gap: 6px; }
+  .tier-row { gap: 6px; }
+
+  .dev-card { border-radius: 8px; }
+  .dev-card::after { inset: 3px; border-radius: 5px; }
+  .dev-card .card-head { padding: 4px 5px 2px; }
+  .card-pts { font-size: 1.15rem; }
+  .dev-card .card-head .gem-art {
+    width: calc(var(--card-w) * 0.26);
+    height: calc(var(--card-w) * 0.26);
+  }
+  .card-costs { bottom: 4px; left: 4px; gap: 3px; }
+  .cost-bubble { font-size: 0.66rem; border-width: 1px; }
+  .dev-card.mini .cost-bubble { width: 13px; height: 13px; font-size: 0.55rem; }
+
+  .card-actions { bottom: -8px; }
+  .card-actions button { padding: 8px 12px; font-size: 0.78rem; }
+
+  .deck-tier-label { font-size: 0.55rem; letter-spacing: 0.18em; top: 5px; }
+  .deck-count { font-size: 0.62rem; padding: 1px 6px; bottom: 5px; right: 5px; }
+
+  .nobles-row { gap: 8px; }
+  .noble-tile { padding: 5px 4px 4px; border-radius: 8px; }
+  .noble-pts { font-size: 0.85rem; top: 2px; left: 5px; }
+  .noble-crown { font-size: 1.1rem; }
+  .noble-reqs { gap: 3px; }
+  .noble-req { font-size: 0.6rem; gap: 2px; padding: 1px 3px 1px 2px; }
+  .noble-req .gem-art { width: 10px; height: 10px; }
+
+  .bonus-chip { min-width: 26px; height: 32px; font-size: 0.8rem; }
+  .pp-score { font-size: 1.25rem; }
+
+  .game-log { max-height: 76px; font-size: 0.72rem; padding: 6px 10px; }
+
+  .banner { width: min(92vw, 420px); padding: 12px 18px; }
+  .discard-bar { width: max-content; max-width: 94vw; padding: 10px 14px; }
+  .discard-bar .msg { font-size: 0.82rem; }
+
+  .modal { padding: 20px 16px; }
+  .noble-choices { flex-wrap: wrap; }
+  .victory-title { font-size: 1.7rem; }
+  .victory-row { gap: 12px; font-size: 0.85rem; }
+
+  /* menu */
+  .menu-screen { padding: 22px 10px 40px; gap: 18px; }
+  .menu-emblem { width: 96px; height: 96px; }
+  .menu-gems { gap: 10px; }
+  .setup-panel { padding: 18px 12px 22px; }
+  .seat-row { flex-wrap: wrap; row-gap: 8px; }
+  .seat-row input[type='text'] { flex-basis: 140px; }
+  .pill { padding: 6px 9px; font-size: 0.75rem; }
+  .start-btn { padding: 12px 38px; font-size: 1rem; }
+}
+
+/* very narrow phones */
+@media (max-width: 380px) {
+  :root {
+    --chip: 42px;
+    --noble: 62px;
+  }
+  .noble-req { font-size: 0.55rem; }
+}
 
 @media (prefers-reduced-motion: reduce) {
   *, *::before, *::after { animation-duration: 0.01ms !important; transition-duration: 0.01ms !important; }

@@ -10,7 +10,9 @@ A faithful, fully playable implementation of the board game **Splendor** (Marc A
 - **2–4 players, hotseat multiplayer** — any mix of humans and computer opponents
 - **Single player vs AI** — three difficulty levels (easy / medium / hard) driven by a heuristic engine that evaluates card value, noble progress, token efficiency, and (on hard) denies opponents' near-winning cards
 - **Full rules enforcement** — take 3 different gems / 2 same (pile of 4+), reserving with gold jokers (max 3), bonus discounts, gold wildcards, the 10-token hand limit with discards, automatic noble visits with player choice on ties, final-round finish with equal turns, and the fewest-cards tie-breaker
-- **Exquisite presentation** — faceted SVG gems, foil-edged cards with sheen sweeps, staggered card deals, gems that fly from the bank to your tableau, noble-visit banners, a confetti victory ceremony, and a live game log
+- **Exquisite presentation** — AI-painted Renaissance artwork (cards, tokens, nobles, table cloth) with animated card deals, gems that fly from the bank to your tableau, noble-visit banners, a confetti victory ceremony, and a live game log
+- **Fully responsive** — desktop, tablet, and phone-portrait layouts
+- **Installable PWA** — offline-capable via a service worker; add it to your home screen from any hosted URL
 
 | Menu | Victory |
 | --- | --- |
@@ -25,7 +27,11 @@ npm run build    # produces a single self-contained dist/index.html
 npm test         # engine test suite (rules + AI self-play)
 ```
 
-The production build is a **single HTML file** (`dist/index.html`) with everything inlined — open it directly in any browser, no server needed.
+The production build is a **single HTML file** (`dist/index.html`) with everything inlined — open it directly in any browser, no server needed. The build also emits `manifest.webmanifest`, `sw.js`, and icons alongside it, so hosting the `dist/` folder anywhere over HTTPS gives you an installable, offline-capable PWA.
+
+### Deploying (GitHub Pages)
+
+A workflow at `.github/workflows/deploy.yml` builds and publishes `dist/` on every push to `main`. One-time setup: repository **Settings → Pages → Source → GitHub Actions**. After the first run the game is live (and installable as an app) at your Pages URL.
 
 ## How to play
 
