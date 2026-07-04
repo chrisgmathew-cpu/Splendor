@@ -33,6 +33,10 @@ The production build is a **single HTML file** (`dist/index.html`) with everythi
 
 A workflow at `.github/workflows/deploy.yml` builds and publishes `dist/` on every push to `main`. One-time setup: repository **Settings → Pages → Source → GitHub Actions**. After the first run the game is live (and installable as an app) at your Pages URL.
 
+## Hosting (private, on Vercel)
+
+The repo is ready to deploy to Vercel behind a shared username/password: [`middleware.ts`](middleware.ts) enforces HTTP Basic Auth at the edge before any file is served, using the `BASIC_AUTH_USER` / `BASIC_AUTH_PASSWORD` environment variables on the Vercel project. Works on the free Hobby plan; local `npm run dev` is unaffected. Full setup steps in [docs/HOSTING.md](docs/HOSTING.md).
+
 ## How to play
 
 First to **15 prestige points** triggers the final round; everyone gets an equal number of turns, then the highest score wins (fewest cards breaks ties). On your turn, do one of:
