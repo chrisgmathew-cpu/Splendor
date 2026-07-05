@@ -862,7 +862,9 @@ button {
 .dev-card.selected {
   transform: translateY(-7px) scale(1.05);
   box-shadow: 0 0 0 3px var(--gold-1), 0 18px 30px rgba(0, 0, 0, 0.65);
-  z-index: 4;
+  /* above sibling cards, noble tiles AND player panels (active panel is 5),
+     so the Buy/Reserve popover is never buried */
+  z-index: 20;
   /* let the action popover escape the card */
   overflow: visible;
 }
@@ -927,6 +929,9 @@ button {
   border-color: var(--gold-1);
   box-shadow: 0 0 0 1px var(--gold-2), 0 0 26px rgba(246, 214, 124, 0.22), 0 12px 28px rgba(0, 0, 0, 0.45);
   transform: translateX(-3px);
+  /* the transform creates a stacking context, which would otherwise let the
+     next panel paint OVER this panel's reserved-card Buy popover */
+  z-index: 5;
 }
 /* clipping layer so the gold sweep stays inside the rounded panel while
    popovers on reserved cards can still overflow it */
