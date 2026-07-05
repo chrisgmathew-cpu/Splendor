@@ -7,7 +7,7 @@ import { GameState } from '../engine/types';
  */
 
 const KEY = 'splendor-save';
-const VERSION = 1;
+const VERSION = 2; // v2: GameState gained startPlayer
 
 interface SaveFile {
   version: number;
@@ -38,6 +38,7 @@ export function loadGame(): { state: GameState; seed: number } | null {
     if (!Array.isArray(s?.players) || s.players.length < 2 || s.players.length > 4) return null;
     if (!Array.isArray(s.decks) || s.decks.length !== 3 || !Array.isArray(s.market)) return null;
     if (typeof s.current !== 'number' || !s.players[s.current]) return null;
+    if (typeof s.startPlayer !== 'number' || !s.players[s.startPlayer]) return null;
     if (s.phase === 'over') return null; // finished games aren't worth resuming
     return { state: s, seed: save.seed >>> 0 };
   } catch {

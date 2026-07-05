@@ -114,9 +114,13 @@ export function createGame(configs: PlayerConfig[], seed: number): GameState {
     nobles: [],
   }));
 
+  // Random opening player, like drawing for first turn at a real table.
+  const startPlayer = Math.floor(rng() * n);
+
   return {
     players,
-    current: 0,
+    current: startPlayer,
+    startPlayer,
     phase: 'action',
     bank,
     decks,
@@ -126,7 +130,7 @@ export function createGame(configs: PlayerConfig[], seed: number): GameState {
     triggeredBy: null,
     winners: null,
     turnCount: 0,
-    log: [],
+    log: [{ turn: 0, player: startPlayer, text: `${players[startPlayer].name} plays first` }],
   };
 }
 
@@ -392,8 +396,9 @@ function endTurn(state: GameState): GameState {
   const nextPlayer = (next.current + 1) % next.players.length;
 
   // The game ends once every player has had an equal number of turns,
-  // i.e. when the turn passes back to player 0 after the final round began.
-  if (next.finalRound && nextPlayer === 0) {
+  // i.e. when the turn would return to the opening player after the final
+  // round began.
+  if (next.finalRound && nextPlayer === next.startPlayer) {
     return finishGame(next);
   }
 

@@ -55,6 +55,8 @@ export interface GameState {
   players: PlayerState[];
   /** Index of the player whose turn it is. */
   current: number;
+  /** Who opened the game (randomized); the final round ends before them. */
+  startPlayer: number;
   phase: Phase;
   bank: TokenCounts;
   /** Face-down decks per tier (index 0 = tier 1). */

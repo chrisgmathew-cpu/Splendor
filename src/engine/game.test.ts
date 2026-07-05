@@ -114,19 +114,20 @@ describe('token taking', () => {
       ],
       3,
     );
-    // Give player A 9 tokens directly, then take 2 more → 11 → discard phase.
+    // Give the acting player 9 tokens directly, then take 2 more → 11 → discard.
+    const actor = g.current;
     g = {
       ...g,
       players: g.players.map((p, i) =>
-        i === 0 ? { ...p, tokens: { white: 3, blue: 3, red: 3 } } : p,
+        i === actor ? { ...p, tokens: { white: 3, blue: 3, red: 3 } } : p,
       ),
     };
     g = applyAction(g, { type: 'take2', color: 'green' });
     expect(g.phase).toBe('discard');
-    expect(totalTokens(g.players[0].tokens)).toBe(11);
+    expect(totalTokens(g.players[actor].tokens)).toBe(11);
     const done = applyDiscard(g, { green: 1 });
-    expect(totalTokens(done.players[0].tokens)).toBe(10);
-    expect(done.current).toBe(1);
+    expect(totalTokens(done.players[actor].tokens)).toBe(10);
+    expect(done.current).toBe((actor + 1) % 4);
   });
 });
 
@@ -169,7 +170,8 @@ describe('nobles and winning', () => {
   it('awards a qualifying noble automatically', () => {
     let g = createGame(twoPlayers, 11);
     const noble = g.nobles[0];
-    // Give player 0 the required bonuses via fake purchased cards.
+    const actor = g.current;
+    // Give the acting player the required bonuses via fake purchased cards.
     const fakeCards = GEM_COLORS.flatMap((color) =>
       Array.from({ length: noble.requirement[color] ?? 0 }, (_, i) => ({
         ...ALL_CARDS.find((c) => c.bonus === color)!,
@@ -179,11 +181,11 @@ describe('nobles and winning', () => {
     g = {
       ...g,
       nobles: [noble],
-      players: g.players.map((p, i) => (i === 0 ? { ...p, cards: fakeCards } : p)),
+      players: g.players.map((p, i) => (i === actor ? { ...p, cards: fakeCards } : p)),
     };
     const next = applyAction(g, { type: 'take3', colors: ['white', 'blue', 'green'] });
-    expect(next.players[0].nobles).toHaveLength(1);
-    expect(score(next.players[0])).toBeGreaterThanOrEqual(3);
+    expect(next.players[actor].nobles).toHaveLength(1);
+    expect(score(next.players[actor])).toBeGreaterThanOrEqual(3);
   });
 
   it('enters noble phase when multiple qualify', () => {
@@ -194,11 +196,12 @@ describe('nobles and winning', () => {
         ...ALL_CARDS.find((c) => c.bonus === color)!,
         id: 2000 + i + 'wugrk'.indexOf(color[0]) * 20,
       }));
+    const actor = g.current;
     g = {
       ...g,
       nobles,
       players: g.players.map((p, i) =>
-        i === 0
+        i === actor
           ? { ...p, cards: [...mkCards('white', 4), ...mkCards('blue', 4), ...mkCards('green', 4)] }
           : p,
       ),
@@ -206,23 +209,37 @@ describe('nobles and winning', () => {
     const next = applyAction(g, { type: 'take3', colors: ['white', 'blue', 'green'] });
     expect(next.phase).toBe('noble');
     const done = applyNobleChoice(next, nobles[1].id);
-    expect(done.players[0].nobles.map((n) => n.id)).toEqual([nobles[1].id]);
+    expect(done.players[actor].nobles.map((n) => n.id)).toEqual([nobles[1].id]);
     expect(done.phase).toBe('action');
-    expect(done.current).toBe(1);
+    expect(done.current).toBe((actor + 1) % 2);
   });
 
   it('finishes the round after 15 points, equal turns for all', () => {
     let g = createGame(twoPlayers, 13);
-    // Give player 1 (second) 15 points worth of cards; player 0 acts first.
+    // Give the SECOND player (non-starter) 15 points; the starter acts first.
+    const second = (g.startPlayer + 1) % 2;
     const bigCards = ALL_CARDS.filter((c) => c.points === 5).slice(0, 3);
-    g = { ...g, players: g.players.map((p, i) => (i === 1 ? { ...p, cards: bigCards } : p)) };
-    // P0 acts — no trigger yet.
+    g = { ...g, players: g.players.map((p, i) => (i === second ? { ...p, cards: bigCards } : p)) };
+    // Starter acts — no trigger yet.
     g = applyAction(g, { type: 'take3', colors: ['white', 'blue', 'green'] });
     expect(g.finalRound).toBe(false);
-    // P1 acts, has 15 pts → final round triggers, and since next is P0 (round complete), game ends.
+    // Second player acts, has 15 pts → final round triggers; next would be the
+    // starter again (round complete) so the game ends.
     g = applyAction(g, { type: 'take3', colors: ['white', 'blue', 'green'] });
     expect(g.phase).toBe('over');
-    expect(g.winners).toEqual([1]);
+    expect(g.winners).toEqual([second]);
+  });
+
+  it('randomizes the starting player across seeds but stays deterministic per seed', () => {
+    const starts = new Set<number>();
+    for (let seed = 1; seed <= 30; seed++) {
+      const a = createGame(twoPlayers, seed);
+      const b = createGame(twoPlayers, seed);
+      expect(a.startPlayer).toBe(b.startPlayer);
+      expect(a.current).toBe(a.startPlayer);
+      starts.add(a.startPlayer);
+    }
+    expect(starts.size).toBeGreaterThan(1); // both seats get to open
   });
 
   it('breaks ties by fewest development cards', () => {
