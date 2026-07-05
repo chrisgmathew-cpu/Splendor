@@ -20,16 +20,24 @@
   --c-black-1: #3d3d4d; --c-black-2: #1c1c26; --c-black-3: #101018;
   --c-gold-1: #f3c94f;  --c-gold-2: #c08e18;
 
-  /* component sizing (overridden per breakpoint) */
-  --card-w: 118px;
-  --card-h: 162px;
-  --card-mini-w: 66px;
-  --card-mini-h: 92px;
-  --deck-w: 84px;
-  --chip: 52px;
-  --chip-sm: 34px;
-  --noble: 92px;
-  --cost-b: 24px;
+  /* Fluid component sizing: cards grow to use large screens (iPad Pro,
+     big monitors), constrained by BOTH the width left over beside the bank
+     and player columns AND the height needed for three rows + chrome.
+     118px is the classic desktop size; 205px the ceiling. Everything else
+     scales off the card. Breakpoints below override for phones. */
+  --card-w: clamp(
+    118px,
+    min(calc((100vw - 496px) / 4.71), calc((100dvh - 310px) / 4.11)),
+    205px
+  );
+  --card-h: calc(var(--card-w) * 1.37);
+  --card-mini-w: calc(var(--card-w) * 0.56);
+  --card-mini-h: calc(var(--card-mini-w) * 1.39);
+  --deck-w: calc(var(--card-w) * 0.71);
+  --chip: clamp(46px, calc(var(--card-w) * 0.44), 64px);
+  --chip-sm: calc(var(--chip) * 0.65);
+  --noble: clamp(84px, calc(var(--card-w) * 0.78), 138px);
+  --cost-b: clamp(21px, calc(var(--card-w) * 0.2), 34px);
 
   font-size: 15px;
 }
@@ -392,15 +400,17 @@ button {
 
 .game-main {
   display: grid;
-  grid-template-columns: 92px 1fr 300px;
+  grid-template-columns: auto 1fr clamp(300px, 26vw, 390px);
   gap: 16px;
   align-items: start;
 }
 
 @media (max-width: 1100px) {
-  .game-main { grid-template-columns: 76px 1fr; }
-  .players-column { grid-column: 1 / -1; flex-direction: row; flex-wrap: wrap; }
-  .players-column .player-panel { flex: 1 1 240px; }
+  .game-main { grid-template-columns: auto 1fr; }
+  /* .game-main prefix outranks the base .players-column rules that appear
+     later in the file — without it the panels stack vertically */
+  .game-main .players-column { grid-column: 1 / -1; flex-direction: row; flex-wrap: wrap; }
+  .game-main .players-column .player-panel { flex: 1 1 240px; }
 }
 
 /* ==========================================================================
@@ -476,8 +486,8 @@ button {
   position: absolute;
   right: -6px;
   bottom: -6px;
-  min-width: 24px;
-  height: 24px;
+  min-width: clamp(24px, calc(var(--chip) * 0.46), 30px);
+  height: clamp(24px, calc(var(--chip) * 0.46), 30px);
   padding: 0 5px;
   border-radius: 999px;
   background: linear-gradient(180deg, #fff0bb, #ecbe45 55%, var(--gold-2));
@@ -589,6 +599,10 @@ button {
 }
 .noble-tile .noble-pts,
 .noble-tile .noble-reqs { position: relative; z-index: 1; }
+
+.noble-tile .noble-pts { font-size: calc(var(--noble) * 0.17); }
+.noble-req { font-size: calc(var(--noble) * 0.115); }
+.noble-req .gem-art { width: calc(var(--noble) * 0.15); height: calc(var(--noble) * 0.15); }
 
 .noble-crown {
   font-size: 1.5rem;
@@ -770,10 +784,16 @@ button {
 .dev-card.c-white .card-head { background: linear-gradient(180deg, rgba(255, 255, 255, 0.5), rgba(255, 255, 255, 0)); }
 
 .card-pts {
-  font-size: 1.6rem;
+  font-size: calc(var(--card-w) * 0.2);
   line-height: 1;
   font-weight: bold;
   text-shadow: 0 2px 3px rgba(0, 0, 0, 0.55);
+}
+
+/* bonus gem and cost digits scale with the card */
+.dev-card .card-head .gem-art {
+  width: calc(var(--card-w) * 0.25);
+  height: calc(var(--card-w) * 0.25);
 }
 .dev-card.c-white .card-pts { color: #1d2530; text-shadow: 0 1px 2px rgba(255, 255, 255, 0.6); }
 
@@ -792,7 +812,7 @@ button {
   border-radius: 50%;
   display: grid;
   place-items: center;
-  font-size: 0.8rem;
+  font-size: calc(var(--cost-b) * 0.52);
   font-weight: bold;
   color: #fff;
   border: 1.5px solid rgba(255, 255, 255, 0.75);
@@ -960,7 +980,7 @@ button {
 .pp-kind { font-size: 0.68rem; color: var(--ink-dim); letter-spacing: 0.12em; text-transform: uppercase; }
 .pp-score {
   margin-left: auto;
-  font-size: 1.45rem;
+  font-size: clamp(1.45rem, calc(var(--card-w) * 0.16), 2.1rem);
   font-weight: bold;
   line-height: 1;
 }
@@ -969,13 +989,13 @@ button {
 .pp-label { font-size: 0.62rem; color: var(--ink-dim); letter-spacing: 0.18em; text-transform: uppercase; width: 100%; margin-bottom: -2px; }
 
 .bonus-chip {
-  min-width: 30px;
-  height: 38px;
+  min-width: clamp(30px, calc(var(--card-w) * 0.27), 46px);
+  height: clamp(38px, calc(var(--card-w) * 0.34), 58px);
   border-radius: 6px;
   display: grid;
   place-items: center;
   font-weight: bold;
-  font-size: 0.92rem;
+  font-size: clamp(0.92rem, calc(var(--card-w) * 0.1), 1.35rem);
   color: #fff;
   border: 1px solid rgba(255, 255, 255, 0.3);
   box-shadow: 0 3px 7px rgba(0, 0, 0, 0.45), inset 0 1px 0 rgba(255, 255, 255, 0.25);
@@ -1178,7 +1198,7 @@ button.combo:hover { transform: translateY(-2px); }
 
 /* log */
 .game-log {
-  max-height: 110px;
+  max-height: clamp(110px, 12dvh, 170px);
   overflow-y: auto;
   background: var(--panel);
   border: 1px solid rgba(246, 214, 124, 0.14);
@@ -1198,12 +1218,16 @@ button.combo:hover { transform: translateY(-2px); }
    Responsive: tablets and phone landscape
    ========================================================================== */
 
+/* two-column layout (bank + board, players below): recompute the width
+   budget; iPad portrait lands here and scales up substantially */
 @media (max-width: 1100px) {
   :root {
-    --card-w: 104px;
-    --card-h: 143px;
-    --deck-w: 72px;
-    --noble: 82px;
+    /* players sit BELOW the board here, so the height budget includes them */
+    --card-w: clamp(
+      104px,
+      min(calc((100vw - 200px) / 4.71), calc((100dvh - 620px) / 4.11)),
+      195px
+    );
   }
 }
 
