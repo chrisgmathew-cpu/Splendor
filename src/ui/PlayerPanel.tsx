@@ -52,7 +52,7 @@ export function PlayerPanel({
         <span className="pp-score gold-text">{pts}</span>
       </div>
 
-      <div className="pp-row">
+      <div className="pp-row pp-bonuses">
         <span className="pp-label">Bonuses</span>
         {GEM_COLORS.map((c: GemColor) => (
           <span
@@ -65,7 +65,44 @@ export function PlayerPanel({
         ))}
       </div>
 
-      <div className="pp-row" data-fly-target={`player-${index}-tokens`}>
+      {/* Compact fit-mode view: bonus count per color with the held-token
+          count as a gold badge — one row instead of two. Hidden by default,
+          shown via CSS in compact contexts. */}
+      <div className="pp-row pp-combined" data-fly-target={`player-${index}-combined`}>
+        {GEM_COLORS.map((c: GemColor) => {
+          const b = bonus[c] ?? 0;
+          const t = count(player.tokens, c);
+          const inner = (
+            <>
+              <span className={`bonus-chip b-${c} ${b === 0 && t === 0 ? 'empty' : ''}`}>{b}</span>
+              {t > 0 && <span className="token-count">{t}</span>}
+            </>
+          );
+          return discardMode && t > 0 ? (
+            <button key={c} className="combo" onClick={() => onDiscardToken?.(c)}>
+              {inner}
+            </button>
+          ) : (
+            <span key={c} className="combo" title={`${b} ${c} bonuses, ${t} tokens`}>
+              {inner}
+            </span>
+          );
+        })}
+        {count(player.tokens, 'gold') > 0 &&
+          (discardMode ? (
+            <button className="combo" onClick={() => onDiscardToken?.('gold')}>
+              <TokenChip color="gold" small />
+              <span className="token-count">{count(player.tokens, 'gold')}</span>
+            </button>
+          ) : (
+            <span className="combo" title={`${count(player.tokens, 'gold')} gold jokers`}>
+              <TokenChip color="gold" small />
+              <span className="token-count">{count(player.tokens, 'gold')}</span>
+            </span>
+          ))}
+      </div>
+
+      <div className="pp-row pp-tokens" data-fly-target={`player-${index}-tokens`}>
         <span className="pp-label">
           Tokens{discardMode ? ' — click to return' : ''}
         </span>

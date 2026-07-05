@@ -243,11 +243,15 @@ export function GameScreen({
   const clickDiscardToken = (color: TokenColor) => {
     if (!humanDiscard || overBy <= 0) return;
     if ((pendingDiscards[color] ?? 0) >= count(current.tokens, color)) return;
-    flyClone(
-      document.querySelector(`[data-fly-target="player-${state.current}-tokens"] .token-chip`),
-      `bank-${color}`,
-      { scale: 0.8, fadeOut: true },
+    // Fly from whichever token row is visible (full or combined compact).
+    const tokensRow = document.querySelector(
+      `[data-fly-target="player-${state.current}-tokens"] .token-chip`,
     );
+    const source =
+      tokensRow && tokensRow.getBoundingClientRect().width > 0
+        ? tokensRow
+        : document.querySelector(`[data-fly-target="player-${state.current}-combined"] .combo`);
+    flyClone(source, `bank-${color}`, { scale: 0.8, fadeOut: true });
     setPendingDiscards((d) => ({ ...d, [color]: (d[color] ?? 0) + 1 }));
   };
 

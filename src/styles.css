@@ -995,6 +995,25 @@ button {
 button.pp-token { cursor: pointer; }
 button.pp-token:hover { transform: translateY(-2px); }
 
+/* combined bonus+token row for compact fit layouts (CSS toggles it on) */
+.pp-combined { display: none; }
+.combo {
+  position: relative;
+  display: inline-grid;
+  padding: 0;
+  border: none;
+  background: none;
+  margin-right: 3px;
+}
+.combo .token-count { right: -7px; bottom: -7px; }
+button.combo { cursor: pointer; }
+button.combo:hover { transform: translateY(-2px); }
+
+/* compact panels swap the two rows for the combined one */
+.game-screen.fit .player-panel:not(.active) .pp-bonuses,
+.game-screen.fit .player-panel:not(.active) .pp-tokens { display: none; }
+.game-screen.fit .player-panel:not(.active) .pp-combined { display: flex; }
+
 .pp-nobles { display: flex; gap: 4px; }
 .pp-noble-mini {
   width: 26px;
@@ -1325,11 +1344,11 @@ button.pp-token:hover { transform: translateY(-2px); }
   height: 28px;
 }
 .game-screen.fit .player-panel:not(.active) .token-count {
-  min-width: 18px;
-  height: 18px;
-  font-size: 0.74rem;
-  right: -4px;
-  bottom: -4px;
+  min-width: 20px;
+  height: 20px;
+  font-size: 0.8rem;
+  right: -5px;
+  bottom: -5px;
 }
 .game-screen.fit .player-panel:not(.active) .dev-card.mini {
   width: 32px;
@@ -1487,15 +1506,23 @@ button.pp-token:hover { transform: translateY(-2px); }
     width: 30px;
     height: 30px;
   }
-  .game-screen.fit .player-panel .token-count,
+  .game-screen.fit .player-panel.active .token-count {
+    min-width: 22px;
+    height: 22px;
+    font-size: 0.9rem;
+  }
   .game-screen.fit .player-panel:not(.active) .token-count {
-    min-width: 17px;
-    height: 17px;
-    font-size: 0.68rem;
+    min-width: 20px;
+    height: 20px;
+    font-size: 0.8rem;
   }
   .game-screen.fit .player-panel.active .pp-label { font-size: 0.5rem; }
   .game-screen.fit .player-panel.active .dev-card.mini { width: var(--card-mini-w); height: var(--card-mini-h); }
   .game-screen.fit .player-panel:not(.active) .dev-card.mini { width: 34px; height: 47px; }
+  /* combined row for every panel in landscape too */
+  .game-screen.fit .player-panel .pp-bonuses,
+  .game-screen.fit .player-panel .pp-tokens { display: none; }
+  .game-screen.fit .player-panel .pp-combined { display: flex; }
 }
 
 /* shorter phones: scale the enlarged elements back down so fit mode still
@@ -1527,8 +1554,14 @@ button.pp-token:hover { transform: translateY(-2px); }
   .game-screen.fit .player-panel .bonus-chip { min-width: 26px; height: 32px; font-size: 0.85rem; }
   .game-screen.fit .player-panel .token-chip,
   .game-screen.fit .player-panel .token-chip.small { width: 28px; height: 28px; }
-  .game-screen.fit .player-panel .token-count { min-width: 18px; height: 18px; font-size: 0.74rem; }
+  /* the acting player's own token counts stay as prominent as the bank's */
+  .game-screen.fit .player-panel.active .token-count { min-width: 22px; height: 22px; font-size: 0.9rem; }
+  .game-screen.fit .player-panel:not(.active) .token-count { min-width: 20px; height: 20px; font-size: 0.8rem; }
   .game-screen.fit .player-panel .pp-score { font-size: 1.35rem; }
+  /* every panel uses the combined bonus+token row on short screens */
+  .game-screen.fit .player-panel .pp-bonuses,
+  .game-screen.fit .player-panel .pp-tokens { display: none; }
+  .game-screen.fit .player-panel .pp-combined { display: flex; }
   .game-screen.fit .player-panel.active .dev-card.mini { width: 40px; height: 55px; }
   .game-screen.fit .player-panel:not(.active) .dev-card.mini { width: 32px; height: 44px; }
 
