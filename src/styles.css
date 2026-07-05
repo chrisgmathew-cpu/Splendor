@@ -38,10 +38,14 @@
 
 html, body, #root { height: 100%; margin: 0; }
 
-/* iOS standalone: paint overscroll/safe areas dark instead of white */
+/* iOS standalone: paint overscroll/safe areas dark instead of white.
+   text-size-adjust: none stops Android font inflation from scaling text
+   and breaking the fixed-size board layout. */
 html {
   background: var(--felt-2);
   overscroll-behavior: none;
+  -webkit-text-size-adjust: 100%;
+  text-size-adjust: 100%;
 }
 
 body {
@@ -470,20 +474,20 @@ button {
 
 .token-count {
   position: absolute;
-  right: -5px;
-  bottom: -5px;
-  min-width: 21px;
-  height: 21px;
-  padding: 0 4px;
+  right: -6px;
+  bottom: -6px;
+  min-width: 24px;
+  height: 24px;
+  padding: 0 5px;
   border-radius: 999px;
-  background: linear-gradient(180deg, var(--gold-1), var(--gold-2));
-  color: #241a03;
-  font-size: 0.78rem;
-  font-weight: bold;
+  background: linear-gradient(180deg, #fff0bb, #ecbe45 55%, var(--gold-2));
+  color: #170f02;
+  font-size: 0.95rem;
+  font-weight: 800;
   display: grid;
   place-items: center;
-  border: 1px solid var(--gold-3);
-  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.5);
+  border: 1.5px solid #5f4210;
+  box-shadow: 0 2px 7px rgba(0, 0, 0, 0.75), inset 0 1px 0 rgba(255, 255, 255, 0.6);
 }
 
 .token-pile.selected .token-chip {
@@ -1192,7 +1196,9 @@ button.pp-token:hover { transform: translateY(-2px); }
     --card-mini-w: 60px;
     --card-mini-h: 84px;
     --deck-w: 13vw;
-    --chip: min(52px, calc((100vw - 60px) / 6));
+    /* generous slack so the six bank piles never wrap, even with odd
+       browser zoom/scaling */
+    --chip: min(52px, calc((100vw - 92px) / 6));
     --chip-sm: 38px;
     --noble: 86px;
     --cost-b: 20px;
@@ -1258,8 +1264,8 @@ button.pp-token:hover { transform: translateY(-2px); }
   .bonus-chip { min-width: 32px; height: 40px; font-size: 1.05rem; }
   .pp-name { font-size: 1.15rem; }
   .pp-score { font-size: 1.7rem; }
-  .pp-token .token-count { min-width: 20px; height: 20px; font-size: 0.78rem; }
-  .token-pile .token-count { min-width: 24px; height: 24px; font-size: 0.9rem; }
+  .pp-token .token-count { min-width: 22px; height: 22px; font-size: 0.88rem; }
+  .token-pile .token-count { min-width: 27px; height: 27px; font-size: 1.05rem; }
 
   .game-log { max-height: 76px; font-size: 0.72rem; padding: 6px 10px; }
 
@@ -1319,11 +1325,11 @@ button.pp-token:hover { transform: translateY(-2px); }
   height: 28px;
 }
 .game-screen.fit .player-panel:not(.active) .token-count {
-  min-width: 16px;
-  height: 16px;
-  font-size: 0.66rem;
-  right: -3px;
-  bottom: -3px;
+  min-width: 18px;
+  height: 18px;
+  font-size: 0.74rem;
+  right: -4px;
+  bottom: -4px;
 }
 .game-screen.fit .player-panel:not(.active) .dev-card.mini {
   width: 32px;
@@ -1496,8 +1502,8 @@ button.pp-token:hover { transform: translateY(-2px); }
    avoids scrolling (must come after the main fit blocks to win the cascade) */
 @media (max-width: 760px) and (max-height: 730px) {
   .game-screen.fit {
-    --noble: 66px;
-    --chip: 46px;
+    --noble: 62px;
+    --chip: min(44px, calc((100vw - 92px) / 6));
     --chip-sm: 32px;
     --cost-b: 17px;
     --card-w: min(
@@ -1507,8 +1513,9 @@ button.pp-token:hover { transform: translateY(-2px); }
         calc((100dvh - 450px - env(safe-area-inset-top) - env(safe-area-inset-bottom)) / 3 * 0.72)
       )
     );
-    gap: 5px;
+    gap: 4px;
   }
+  .game-screen.fit .game-main { gap: 5px; }
   .game-screen.fit .card-pts { font-size: 1.25rem; }
   .game-screen.fit .noble-req { font-size: 0.6rem; }
   .game-screen.fit .noble-req .gem-art { width: 10px; height: 10px; }
@@ -1520,7 +1527,7 @@ button.pp-token:hover { transform: translateY(-2px); }
   .game-screen.fit .player-panel .bonus-chip { min-width: 26px; height: 32px; font-size: 0.85rem; }
   .game-screen.fit .player-panel .token-chip,
   .game-screen.fit .player-panel .token-chip.small { width: 28px; height: 28px; }
-  .game-screen.fit .player-panel .token-count { min-width: 16px; height: 16px; font-size: 0.66rem; }
+  .game-screen.fit .player-panel .token-count { min-width: 18px; height: 18px; font-size: 0.74rem; }
   .game-screen.fit .player-panel .pp-score { font-size: 1.35rem; }
   .game-screen.fit .player-panel.active .dev-card.mini { width: 40px; height: 55px; }
   .game-screen.fit .player-panel:not(.active) .dev-card.mini { width: 32px; height: 44px; }
